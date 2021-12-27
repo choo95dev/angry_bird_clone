@@ -17,7 +17,9 @@ public class Bird : MonoBehaviour
 
     private void Update()
     {
-        if(_birdWasLaunched && GetComponent<Rigidbody2D>().velocity.magnitude <= 0.1)
+        GetComponent<LineRenderer>().SetPosition(0, transform.position);
+        GetComponent<LineRenderer>().SetPosition(1, _initialPos);
+        if (_birdWasLaunched && GetComponent<Rigidbody2D>().velocity.magnitude <= 0.1)
         {
             _timeSittingAround += Time.deltaTime;
         }
@@ -31,15 +33,20 @@ public class Bird : MonoBehaviour
     private void OnMouseDown()
     {
         GetComponent<SpriteRenderer>().color = Color.red;
+        GetComponent<LineRenderer>().enabled = true;
     }
 
     private void OnMouseUp()
     {
         GetComponent<SpriteRenderer>().color = Color.white;
+
         Vector2 directionToInitialPos = _initialPos - transform.position;
+
         GetComponent<Rigidbody2D>().AddForce(directionToInitialPos * _pushForce);
         GetComponent<Rigidbody2D>().gravityScale = 1;
         _birdWasLaunched = true;
+
+        GetComponent<LineRenderer>().enabled = false;
     }
 
     private void OnMouseDrag()
